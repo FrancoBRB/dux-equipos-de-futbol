@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,22 +58,24 @@ public class TeamControllerTest {
     }
 
     @Test
-    void createValidTeamTest() {
+    void createValidTeam() {
         CreateTeamDto createTeamDto = new CreateTeamDto("Union de Santa Fe", "Liga Argentina", "Argentina");
+        TeamDto createdTeamDto = new TeamDto(1L, "Union de Santa Fe", "Liga Argentina", "Argentina");
 
         BindingResult bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(false);
 
-        ResponseEntity<CreateTeamDto> mockResponse =
-                ResponseEntity.status(HttpStatus.CREATED).body(createTeamDto);
-        when(teamService.saveTeam(createTeamDto)).thenReturn(mockResponse);
+        ResponseEntity<TeamDto> mockResponse =
+                ResponseEntity.status(HttpStatus.CREATED).body(createdTeamDto);
+
+        when(teamService.saveTeam(any(CreateTeamDto.class))).thenReturn(mockResponse);
 
         ResponseEntity<?> response = teamController.createTeam(createTeamDto, bindingResult);
 
         Assertions.assertEquals(201, response.getStatusCodeValue());
-        Assertions.assertTrue(response.getBody() instanceof CreateTeamDto);
+        Assertions.assertTrue(response.getBody() instanceof TeamDto);
 
-        CreateTeamDto responseBody = (CreateTeamDto) response.getBody();
+        TeamDto responseBody = (TeamDto) response.getBody();
         Assertions.assertEquals("Union de Santa Fe", responseBody.getNombre());
         Assertions.assertEquals("Liga Argentina", responseBody.getLiga());
         Assertions.assertEquals("Argentina", responseBody.getPais());
