@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeamDto {
+public class CreateTeamDto {
 
-    private Long id;
 
     @NotBlank(message = "El nombre no puede ser nulo o vacio")
     private String nombre;
