@@ -4,6 +4,7 @@ import com.dux.equipos_futbol.security.JwtRequest;
 import com.dux.equipos_futbol.security.JwtResponse;
 import com.dux.equipos_futbol.security.JwtTokenUtil;
 import com.dux.equipos_futbol.service.impl.JwtUserDetailsService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,6 +30,7 @@ public class JwtAuthenticationController {
         this.userDetailsService = userDetailsService;
     }
 
+    @Operation(summary = "Inicio de sesion", description = "Inicia sesion para la generacion del token JWT")
     @PostMapping("/auth/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());

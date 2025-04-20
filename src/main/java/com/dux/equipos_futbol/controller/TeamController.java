@@ -5,6 +5,7 @@ import com.dux.equipos_futbol.dto.ResponseDto;
 import com.dux.equipos_futbol.dto.TeamDto;
 import com.dux.equipos_futbol.model.Team;
 import com.dux.equipos_futbol.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -41,23 +42,27 @@ public class TeamController {
     }
 
     @GetMapping
+    @Operation(summary = "Obtener todos los equipos", description = "Devuelve una lista con todos los equipos registrados")
     public ResponseEntity<List<TeamDto>> getAllTeams(){
         logger.info("Requesting -> GET /equipos/");
         return ResponseEntity.ok(this.teamService.findAll());
     }
 
+    @Operation(summary = "Obtener equipo por id", description = "Obtiene un equipo por su id")
     @GetMapping("/{id}")
     public ResponseEntity<?> getTeamById(@PathVariable Long id){
         logger.info("Requesting -> GET /equipos/" + id);
         return this.teamService.getTeamById(id);
     }
 
+    @Operation(summary = "Obtener todos los equipos por nombre", description = "Devuelve una lista con todos los equipos filtrado por nombre")
     @GetMapping("/buscar")
     public ResponseEntity<List<TeamDto>> getTeamsByName(@RequestParam String name){
         logger.info("Requesting -> GET /equipos/buscar?="+ name);
         return ResponseEntity.ok(this.teamService.getByNombre(name));
     }
 
+    @Operation(summary = "Crear equipo", description = "Crea un equipo y lo guarda en la base de datos")
     @PostMapping
     public ResponseEntity<?> createTeam(@Valid @RequestBody CreateTeamDto team, BindingResult bindingResult){
         logger.info("Requesting -> POST /equipos/ with data ({})", team );
@@ -69,6 +74,7 @@ public class TeamController {
         return this.teamService.saveTeam(team);
     }
 
+    @Operation(summary = "Actualizar equipo", description = "Actualiza la informacion de un equipo")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateTeam(@Valid @RequestBody CreateTeamDto team, BindingResult bindingResult, @PathVariable Long id){
         logger.info("Requesting -> PUT /equipos/" + id + " with data ({})", team );
@@ -80,6 +86,7 @@ public class TeamController {
         return this.teamService.updateTeam(id,team);
     }
 
+    @Operation(summary = "Eliminar equipo", description = "Elimina un equipo de la base de datos")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTeam(@PathVariable Long id){
         logger.info("Requesting -> DELETE /equipos/" + id);
