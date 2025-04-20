@@ -1,4 +1,7 @@
 package com.dux.equipos_futbol.service;
 
-public class UserService {
+import com.dux.equipos_futbol.model.Users;
+
+public interface UserService {
+    public Users save(Users user);
 }
