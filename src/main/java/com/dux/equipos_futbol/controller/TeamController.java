@@ -2,6 +2,7 @@ package com.dux.equipos_futbol.controller;
 
 import com.dux.equipos_futbol.dto.CreateTeamDto;
 import com.dux.equipos_futbol.dto.ResponseDto;
+import com.dux.equipos_futbol.dto.TeamDto;
 import com.dux.equipos_futbol.model.Team;
 import com.dux.equipos_futbol.service.TeamService;
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ public class TeamController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Team>> getAllTeams(){
+    public ResponseEntity<List<TeamDto>> getAllTeams(){
         logger.info("Requesting -> GET /equipos/");
         return ResponseEntity.ok(this.teamService.findAll());
     }
@@ -52,8 +53,8 @@ public class TeamController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<List<Team>> getTeamsByName(@RequestParam String name){
-        logger.info("Requesting -> GET /equipos/"+ name);
+    public ResponseEntity<List<TeamDto>> getTeamsByName(@RequestParam String name){
+        logger.info("Requesting -> GET /equipos/buscar?="+ name);
         return ResponseEntity.ok(this.teamService.getByNombre(name));
     }
 

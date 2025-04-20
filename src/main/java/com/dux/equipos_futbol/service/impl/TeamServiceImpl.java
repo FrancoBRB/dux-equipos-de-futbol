@@ -2,6 +2,7 @@ package com.dux.equipos_futbol.service.impl;
 
 import com.dux.equipos_futbol.dto.ResponseDto;
 import com.dux.equipos_futbol.dto.CreateTeamDto;
+import com.dux.equipos_futbol.dto.TeamDto;
 import com.dux.equipos_futbol.model.Team;
 import com.dux.equipos_futbol.repository.TeamRepository;
 import com.dux.equipos_futbol.service.TeamService;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,23 +29,23 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Team> findAll(){
+    public List<TeamDto> findAll(){
         List<Team> teams = teamRepository.findAll();
-        return teams;
+        return teams.stream().map(this::mapTeamToTeamDto).collect(Collectors.toList()) ;
     }
 
     @Override
     public ResponseEntity<?> getTeamById(Long id){
         Optional<Team> team = teamRepository.findById(id);
-        if(team.isPresent()) return ResponseEntity.ok(team.get());
+        if(team.isPresent()) return ResponseEntity.ok(this.mapTeamToTeamDto(team.get()));
         return ResponseEntity.status(HttpStatus.NOT_FOUND).
                 body(new ResponseDto("Equipo no encontrado", HttpStatus.NOT_FOUND.value()));
     }
 
     @Override
-    public List<Team> getByNombre(String nombre){
+    public List<TeamDto> getByNombre(String nombre){
         List<Team> teams = teamRepository.findByNombreContainingIgnoreCase(nombre);
-        return teams;
+        return teams.stream().map(this::mapTeamToTeamDto).collect(Collectors.toList());
     }
 
     @Override
@@ -82,5 +84,14 @@ public class TeamServiceImpl implements TeamService {
         team.setPais(createTeamDto.getPais());
         team.setLiga(createTeamDto.getLiga());
         return team;
+    }
+
+    private TeamDto mapTeamToTeamDto(Team team){
+        TeamDto teamDto = new TeamDto();
+        teamDto.setId(team.getId());
+        teamDto.setNombre(team.getNombre());
+        teamDto.setPais(team.getPais());
+        teamDto.setLiga(team.getLiga());
+        return teamDto;
     }
 }
