@@ -11,7 +11,7 @@ public interface TeamService {
     public List<TeamDto> findAll();
     public ResponseEntity<?> getTeamById(Long id);
     public List<TeamDto> getByNombre(String nombre);
-    public ResponseEntity<?> saveTeam(CreateTeamDto team);
+    public ResponseEntity<CreateTeamDto> saveTeam(CreateTeamDto team);
     public ResponseEntity<?> updateTeam(Long id, CreateTeamDto teamDto);
     public ResponseEntity<?> deleteTeam(Long id);
 }

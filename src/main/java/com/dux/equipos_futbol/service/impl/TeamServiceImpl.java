@@ -49,7 +49,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public ResponseEntity<?> saveTeam(CreateTeamDto createTeamDto){
+    public ResponseEntity<CreateTeamDto> saveTeam(CreateTeamDto createTeamDto){
         Team team  = teamRepository.save(this.mapCreateTeamDtoToTeam(createTeamDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(createTeamDto);
     }
